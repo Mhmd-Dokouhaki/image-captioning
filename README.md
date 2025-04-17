@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a complete implementation of an image captioning system using a combination of Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs). The system takes images as input and generates natural language descriptions of their content.
+This repository contains an implementation framework for an image captioning system using a combination of Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs). The system takes images as input and generates natural language descriptions of their content.
 
 Image captioning sits at the intersection of computer vision and natural language processing, combining feature extraction from images with sequence modeling for text generation. This implementation follows the encoder-decoder architecture:
 
@@ -11,39 +11,87 @@ Image captioning sits at the intersection of computer vision and natural languag
 
 ## Project Structure
 
+```
 image_captioning_assignment/
-├── 📁 data/
-│ └── 📄 download_flickr.py # Script to download and prepare Flickr8k dataset
-├── 📁 models/
-│ ├── 📄 encoder.py # CNN encoder implementations (ResNet, MobileNet)
-│ ├── 📄 decoder.py # RNN decoder implementations (LSTM, GRU)
-│ └── 📄 caption_model.py # Combined encoder-decoder model
-├── 📁 utils/
-│ ├── 📄 dataset.py # Dataset and data loader utilities
-│ ├── 📄 vocabulary.py # Vocabulary building and text processing
-│ ├── 📄 trainer.py # Training loop and optimization
-│ └── 📄 metrics.py # Evaluation metrics (BLEU, etc.)
-├── 📁 notebooks/
-│ ├── 📘 1_Data_Exploration.ipynb # Dataset exploration and analysis
-│ ├── 📘 2_Feature_Extraction.ipynb # CNN feature extraction
-│ ├── 📘 3_Model_Training.ipynb # Model training and monitoring
-│ └── 📘 4_Evaluation_Visualization.ipynb# Results analysis and visualization
-├── 📄 requirements.txt # Project dependencies
-└── 📄 README.md # Project documentation
+├── data/
+│   └── download_flickr.py     # Script to download and prepare Flickr8k dataset
+├── models/
+│   ├── encoder.py             # CNN encoder implementations 
+│   ├── decoder.py             # RNN decoder implementations
+│   └── caption_model.py       # Combined encoder-decoder model
+├── utils/
+│   ├── dataset.py             # Dataset and data loader utilities
+│   ├── vocabulary.py          # Vocabulary building and text processing
+│   ├── trainer.py             # Training loop and optimization
+│   └── metrics.py             # Evaluation metrics (BLEU, etc.)
+├── notebooks/
+│   ├── 1_Data_Exploration.ipynb       # Dataset exploration
+│   ├── 2_Feature_Extraction.ipynb     # CNN feature extraction
+│   ├── 3_Model_Training.ipynb         # Model training
+│   └── 4_Evaluation_Visualization.ipynb # Results analysis
+├── requirements.txt           # Project dependencies
+└── README.md                  # Project documentation
+```
+
+## Student TODO Sections
+
+Throughout this project, you'll need to implement various components marked with `TODO` comments. Here's a summary of what you'll be working on:
+
+### Core Implementation Tasks
+
+1. **Data Processing** (`download_flickr.py`):
+   - Process captions from the Flickr8k dataset
+   - Create train/val/test splits
+
+2. **Encoder** (`encoder.py`):
+   - Initialize CNN backbones (ResNet, MobileNet)
+   - Create projection layers for feature vectors
+
+3. **Decoder** (`decoder.py`):
+   - Implement the RNN/LSTM/GRU decoder
+   - Create word embedding layers
+   - Implement the caption generation logic with teacher forcing
+   - Implement greedy decoding for inference
+
+4. **Caption Model** (`caption_model.py`):
+   - Integrate encoder and decoder
+   - Implement the forward pass
+   - Implement caption generation
+
+5. **Data Utilities**:
+   - Build vocabulary and tokenization functions (`vocabulary.py`)
+   - Create dataset loaders and transformations (`dataset.py`)
+   - Implement evaluation metrics (`metrics.py`)
+   - Create training and validation loops (`trainer.py`)
+
+### Notebook Implementation Tasks
+
+Each notebook contains specific TODOs:
+
+1. **Data Exploration**: Implement functions to visualize and analyze the dataset
+2. **Feature Extraction**: Implement feature extraction using pre-trained CNNs
+3. **Model Training**: Implement model training, parameter counting, and caption generation
+4. **Evaluation**: Implement metrics calculation and results visualization
 
 ## Installation
 
 1. Clone this repository:
+```
 git clone https://github.com/Mound21k/image-captioning.git
 cd image-captioning
+```
 
 2. Create a virtual environment and install dependencies:
+```
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
+```
 
 3. Download the Flickr8k dataset:
+```
 python data/download_flickr.py --data_dir ./data
+```
 
 ## Dataset
 
@@ -60,13 +108,14 @@ The `download_flickr.py` script handles:
 
 ## Usage
 
-The project is organized as a sequence of steps, each implemented in a dedicated notebook:
+The project is organized as a sequence of notebooks, each focused on a different stage of the pipeline:
 
 ### 1. Data Exploration
 
-Run the first notebook to understand the dataset characteristics:
-
-* jupyter notebook notebooks/1_Data_Exploration.ipynb
+Run the first notebook to understand the dataset:
+```
+jupyter notebook notebooks/1_Data_Exploration.ipynb
+```
 
 This notebook:
 - Explores the image and caption distributions
@@ -77,8 +126,9 @@ This notebook:
 ### 2. Feature Extraction
 
 Extract image features using pre-trained CNN models:
-
-* jupyter notebook notebooks/2_Feature_Extraction.ipynb
+```
+jupyter notebook notebooks/2_Feature_Extraction.ipynb
+```
 
 This notebook:
 - Implements feature extraction using different CNN backbones (ResNet18, ResNet50, MobileNetV2)
@@ -89,8 +139,9 @@ This notebook:
 ### 3. Model Training
 
 Train the image captioning model:
-
-* jupyter notebook notebooks/3_Model_Training.ipynb
+```
+jupyter notebook notebooks/3_Model_Training.ipynb
+```
 
 This notebook:
 - Implements the encoder-decoder architecture
@@ -102,8 +153,9 @@ This notebook:
 ### 4. Evaluation and Visualization
 
 Evaluate the trained model and visualize results:
-
-* jupyter notebook notebooks/4_Evaluation_Visualization.ipynb
+```
+jupyter notebook notebooks/4_Evaluation_Visualization.ipynb
+```
 
 This notebook:
 - Generates captions for test images
@@ -121,7 +173,7 @@ The encoder module (`models/encoder.py`) provides several CNN options:
 - **ResNet50**: A deeper model with 2048-dimensional features
 - **MobileNetV2**: An efficient model with 1280-dimensional features
 
-Each model is pre-trained on ImageNet and modified to output feature vectors of the desired dimension.
+Each model is pre-trained on ImageNet and modified to output feature vectors.
 
 ### Decoder
 
@@ -139,13 +191,13 @@ The combined model (`models/caption_model.py`) connects the encoder and decoder:
 - Implements caption generation using teacher forcing during training
 - Provides both greedy and beam search decoding during inference
 
-## Results
+## Expected Results
 
-The system achieves competitive performance on the Flickr8k dataset:
+A fully implemented system should achieve:
 - BLEU-1: ~0.60-0.65
 - BLEU-4: ~0.20-0.25
 
-Example captions generated by the model:
+Example captions:
 - "A brown dog runs through the grass"
 - "A man in a red shirt is climbing a rock wall"
 - "Children playing soccer on a green field"
@@ -163,9 +215,9 @@ Main dependencies include:
 
 See `requirements.txt` for the complete list.
 
-## Extending the Project
+## Optional Extensions
 
-You can extend this project in several ways:
+After completing the required TODOs, you can extend your project with:
 1. **Attention Mechanism**: Implement visual attention to focus on relevant image regions
 2. **Transformer Architecture**: Replace the RNN decoder with a Transformer
 3. **Larger Datasets**: Use MS COCO or Flickr30k for more training data
