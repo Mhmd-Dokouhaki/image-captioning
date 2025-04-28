@@ -83,6 +83,30 @@ def process_captions(dataset_path):
     # 2. Parse each line to extract image_name and caption
     # 3. Remove the #id suffix from image_name
     # 4. Create a list of dictionaries with 'image' and 'caption' keys
+    with open(captions_path, 'r') as file:
+        captions = file.read.split("\n")
+    
+    print(captions[:10])
+
+    caption_dict = {}
+
+    for line in captions:
+
+        content = line.split("\t")
+        if len(content) < 2:
+            continue
+        
+        filename, caption = content[0], content[1]
+        filname = filname[:-2]
+
+        if filename in caption_dict.keys():
+            caption_dict[filename].append(caption)
+        else:
+            caption_dict[filename] = [caption]
+    
+    print(f"Found {len(caption_dict)} images with captions")
+
+
     data = []
     
     # Create DataFrame and save to CSV
@@ -143,16 +167,24 @@ def create_splits(dataset_path):
     # TODO: Read the split files and create sets of image filenames for each split
     # 1. Read Flickr_8k.trainImages.txt, Flickr_8k.devImages.txt, and Flickr_8k.testImages.txt
     # 2. Create sets containing the image filenames for train, validation, and test splits
-    train_images = set()
-    val_images = set()
-    test_images = set()
-    
+    with open(os.path.join(flickr_text_dir, "Flickr_8k.trainImages.txt"), "r") as file:
+        train_images = set(line.strip() for line in file)
+    with open(os.path.join(flickr_text_dir, "Flickr_8k.devImages.txt"), "r") as file:
+        val_images = set(line.strip() for line in file)
+    with open(os.path.join(flickr_text_dir, "Flickr_8k.testImages.txt"), "r") as file:
+        test_images = set(line.strip() for line in file)
+
     # Load caption data
     captions_df = pd.read_csv(os.path.join(processed_dir, "captions.csv"))
-    
-    train_df = ...
-    val_df = ...
-    test_df = ...
+
+    train_df = captions_df[captions_df['image'].isin(train_images)]
+    val_df = captions_df[captions_df['image'].isin(val_images)]
+    test_df = captions_df[captions_df['image'].isin(test_images)]
+
+    # Save to CSV
+    train_df.to_csv(os.path.join(processed_dir, "train.csv"), index=False)
+    val_df.to_csv(os.path.join(processed_dir, "val.csv"), index=False)
+    test_df.to_csv(os.path.join(processed_dir, "test.csv"), index=False)
     # TODO: Create DataFrames for each split by filtering the captions_df
     # 1. Filter captions_df to create train_df, val_df, and test_df based on image filename
     # 2. Save each DataFrame to a CSV file in the processed directory
